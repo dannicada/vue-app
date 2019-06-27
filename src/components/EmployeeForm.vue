@@ -2,9 +2,28 @@
    <div id = "employee-form">
     <form v-on:submit.prevent = "handleSubmit">
         <label>EmployeeName</label>
-        <input v-model="employee.name" type="text"/>
+        <input 
+            ref="first"
+            :class="{'has-error':submitting && invalidName}" 
+            v-model="employee.name" 
+            type="text"
+            @focus="clearStatus"
+            @keypress="clearStatus"
+        />
         <label>EmployeeEmail</label>
-        <input v-model="employee.email" type="text"/>
+        <input 
+            :class="{'has-error': submitting && invalidEmail}"
+            v-model="employee.email" 
+            @focus="clearStatus"
+            type="text"
+        />
+        <p v-if="error && submitting" class="error-message">
+            ❗please fill out all required fields
+        </p>
+        <p v-if="success" class="success-message">
+            ✅ Employee successfully added
+        </p>
+
         <button>Add Employee</button>
     </form>   
     </div> 
@@ -35,10 +54,14 @@ export default {
                 return
             }
             this.$emit('add:employee',this.employee)
+            this.$refs.first.focus()
             this.employee = {
                 name: '',
                 email: '',
             }
+            this.error = false
+            this.success = true
+            this.submitting = false
         },
         clearStatus() {
             this.success = false
@@ -57,8 +80,19 @@ export default {
 </script>
 
 <style scoped>
-form {
+    form {
         margin-bottom: 2rem;
     }
 
+    [class*='-message'] {
+        font-weight: 500;
+    }
+
+    .error-message {
+        color: #d33c40;
+    }
+    
+    .success-message {
+        color: #32a95d;
+    }
 </style>

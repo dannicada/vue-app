@@ -39,8 +39,10 @@ export default {
   },
   methods: {
     addEmployee(employee) {
+      //testing the arrival of a new employee
       console.log(employee.name)
 
+      //creating new employee and assigning id to employee
       const lastId = this.employees.length > 0 ? this.employees[this.employees.length - 1].id : 0;
       const newId = lastId+1;
       const newEmployee = {
@@ -49,6 +51,8 @@ export default {
         id:  newId
       };
       this.employees.push(newEmployee);
+      
+      //testing the assignment of new id
       console.log(newEmployee.id)
     },
   },
